@@ -1,26 +1,31 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "OSCServer.h"
+#include "OSCMessage.h"
 #include "OSCReceiver.generated.h"
 
 UCLASS()
 class MOTIONCATCH_API AOSCReceiver : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
+
+public:
 	AOSCReceiver();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
+public:
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY()
+	UOSCServer* OSCServer;
+
+	UPROPERTY()
+	float ReceivedX;
+
+	UFUNCTION()
+	void OnOSCMessageReceived(const FOSCMessage& Message, const FString& IPAddress, int32 Port);
 };
