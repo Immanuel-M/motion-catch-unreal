@@ -24,4 +24,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* MeshComponent;
+
+	UPROPERTY()
+	class AOSCReceiver* OSCReceiverRef;
 };

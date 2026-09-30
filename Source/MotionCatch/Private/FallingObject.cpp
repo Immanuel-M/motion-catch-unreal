@@ -2,6 +2,8 @@
 
 
 #include "FallingObject.h"
+#include "OSCReceiver.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AFallingObject::AFallingObject()
@@ -19,6 +21,9 @@ void AFallingObject::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	OSCReceiverRef = Cast<AOSCReceiver>(
+		UGameplayStatics::GetActorOfClass(GetWorld(), AOSCReceiver::StaticClass())
+	);
 }
 
 // Called every frame
@@ -26,10 +31,15 @@ void AFallingObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//Adding motion component
-	FVector NewLocation = GetActorLocation();
-	NewLocation.X += 100.f * DeltaTime;
-	SetActorLocation(NewLocation);
+	if (OSCReceiverRef)
+	{
+		float HandX = OSCReceiverRef->ReceivedX;
+		float NewY = (HandX - 0.5f) * 1000.0f;
+
+		FVector NewLocation = GetActorLocation();
+		NewLocation.Y = NewY;
+		SetActorLocation(NewLocation);
+	}
 
 }
 
